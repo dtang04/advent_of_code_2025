@@ -31,6 +31,6 @@ def main():
                 beams = next_beams
                 disp.append(line)
             display(disp)
-            #print(numSplits) #Part 1: 1660
+            print(numSplits) #Part 1: 1660
 if __name__ == "__main__":
     main()
