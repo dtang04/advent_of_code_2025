@@ -1,4 +1,4 @@
-## Advent of Code 2025
+## Advent of Code 2025 (AoC 2025)
 
 ### Info
 * Directories are separated by day. AoC 2025 has 15 days total.
