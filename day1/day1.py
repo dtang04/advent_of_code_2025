@@ -22,7 +22,7 @@ def main():
             current = turn(current, direction, amount)
             if current == 0:
                 part1_count += 1
-    print(part1_count) #Part 1: 980s
+    print(part1_count) #Part 1: 980
 
     lst = []
     part2_count = 0
