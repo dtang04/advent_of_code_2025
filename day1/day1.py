@@ -24,5 +24,25 @@ def main():
                 part1_count += 1
     print(part1_count)
 
+    lst = []
+    part2_count = 0
+    with open("day1.txt", "r") as s:
+        current = 50
+        for l in s:
+            l = l.strip()
+            d = l[0]
+            amount = int(l[1:])
+            if d == "R":
+                for i in range(1, amount+1):
+                    current += 1
+                    if current % 100 == 0:
+                        part2_count += 1
+            if d == "L":
+                for i in range(1, amount+1):
+                    current -= 1
+                    if current % 100 == 0:
+                        part2_count += 1
+    print(part2_count)
+
 if __name__ == "__main__":
     main()
