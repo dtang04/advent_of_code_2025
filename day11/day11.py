@@ -16,7 +16,7 @@ def findAllPaths_DACFFT(current, links, dac = False, fft = False):
     - Assume links is a DAG. Then, we don't have to track cycle detection, and can just look for whether a path has dac and fft. 
     - Use LRU cache memoization to cache frequent recursive calls.
     """
-    @lru_cache(maxsize=None) # memoization must take immutable parameters
+    @lru_cache(maxsize=1024) # memoization must take immutable parameters
     def memoized_search(current, dac, fft):
         if current == 'out':
             if dac and fft:
