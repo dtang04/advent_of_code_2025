@@ -51,7 +51,7 @@ def main():
             key = lst[0]
             vals = lst[1].strip().split(" ")
             links[key] = vals
-    print(findAllPaths("you", links)) 
+    print(findAllPaths("you", links)) # Part 1: 764
     """  
     # Convert dict into immutable
     for key, arr in links.items():
@@ -62,7 +62,7 @@ def main():
     t_links = tuple(links.items())
     print(t_links)
     """
-    print(findAllPaths_DACFFT("svr", links))
+    print(findAllPaths_DACFFT("svr", links)) # Part 2: 462444153119850
 
 if __name__ == "__main__":
     main()
