@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 def findAllPaths(current, links):
     if current == 'out':
         return 1
@@ -9,19 +11,28 @@ def findAllPaths(current, links):
         numPaths += findAllPaths(n, links)
     return numPaths
 
-def findAllPaths_DACFFT(current, links, trail = ["svr"]):
+@lru_cache # for memoization
+def findAllPaths_DACFFT(current, links, trail_str = "svr"):
     if current == 'out':
-        if 'dac' in trail and 'fft' in trail:
+        if 'dac' in trail_str and 'fft' in trail_str:
             return 1
         return 0
-    neighbors = links[current]
+
+    neighbors = []
+    for key, n in links:
+        if key == current:
+            neighbors = n.strip().split(" ")
+            break
+
     if len(neighbors) == 0:
         return 0
+
     numPaths = 0
+    trail = trail_str.split(" ")
     for n in neighbors:
         if n in trail:
             continue
-        numPaths += findAllPaths_DACFFT(n, links, trail + [n])
+        numPaths += findAllPaths_DACFFT(n, links, trail_str + " " + n)
     return numPaths
 
 def main():
@@ -32,8 +43,17 @@ def main():
             key = lst[0]
             vals = lst[1].strip().split(" ")
             links[key] = vals
-    print(findAllPaths("you", links)) #Answer: 764
-    print(findAllPaths_DACFFT("svr", links, ["svr"]))
+    print(findAllPaths("you", links)) 
+    
+    # Convert dict into immutable
+    for key, arr in links.items():
+        stri = ""
+        for e in arr:
+            stri += e + " "
+        links[key] = stri
+    t_links = tuple(links.items())
+    print(t_links)
+    print(findAllPaths_DACFFT("svr", t_links))
 
 if __name__ == "__main__":
     main()
