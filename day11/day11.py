@@ -11,28 +11,36 @@ def findAllPaths(current, links):
         numPaths += findAllPaths(n, links)
     return numPaths
 
-@lru_cache # for memoization
-def findAllPaths_DACFFT(current, links, trail_str = "svr"):
-    if current == 'out':
-        if 'dac' in trail_str and 'fft' in trail_str:
-            return 1
-        return 0
+def findAllPaths_DACFFT(current, links, dac = False, fft = False):
+    """
+    - Assume links is a DAG. Then, we don't have to track cycle detection, and can just look for whether a path has dac and fft. 
+    - Use LRU cache memoization to cache frequent recursive calls.
+    """
+    @lru_cache(maxsize=None) # memoization must take immutable parameters
+    def memoized_search(current, dac, fft):
+        if current == 'out':
+            if dac and fft:
+                return 1
+            return 0
 
-    neighbors = []
-    for key, n in links:
-        if key == current:
-            neighbors = n.strip().split(" ")
-            break
+        if current == 'dac':
+            dac = True
+    
+        if current == 'fft':
+            fft = True
 
-    if len(neighbors) == 0:
-        return 0
+        neighbors = links[current]
+        if len(neighbors) == 0: # Incomplete path
+            return 0
 
-    numPaths = 0
-    trail = trail_str.split(" ")
-    for n in neighbors:
-        if n in trail:
-            continue
-        numPaths += findAllPaths_DACFFT(n, links, trail_str + " " + n)
+        numPaths = 0
+        for n in neighbors:
+            numPaths += memoized_search(n, dac, fft)
+        return numPaths
+    
+    numPaths = memoized_search(current, dac, fft)
+    print(memoized_search.cache_info())
+
     return numPaths
 
 def main():
@@ -44,7 +52,7 @@ def main():
             vals = lst[1].strip().split(" ")
             links[key] = vals
     print(findAllPaths("you", links)) 
-    
+    """  
     # Convert dict into immutable
     for key, arr in links.items():
         stri = ""
@@ -53,7 +61,8 @@ def main():
         links[key] = stri
     t_links = tuple(links.items())
     print(t_links)
-    print(findAllPaths_DACFFT("svr", t_links))
+    """
+    print(findAllPaths_DACFFT("svr", links))
 
 if __name__ == "__main__":
     main()
